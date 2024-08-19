@@ -1,0 +1,17 @@
+[tool.poetry]
+name = "deelgeorgia"
+version = "0.1.0"
+description = ""
+authors = ["Georgy Gritsenko <georgy.gritsenko@truv.com>"]
+readme = "README.md"
+
+[tool.poetry.dependencies]
+python = "^3.11"
+py-pdf-parser = "^0.12.0"
+requests = "^2.31.0"
+dateparser = "^1.2.0"
+
+
+[build-system]
+requires = ["poetry-core"]
+build-backend = "poetry.core.masonry.api"
