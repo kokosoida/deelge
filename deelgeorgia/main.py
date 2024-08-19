@@ -1,20 +1,17 @@
 import csv
-
-import csv, io
 import datetime
+import io
 import os
+import re
+import sys
 from collections import defaultdict
 from contextlib import suppress
 from dataclasses import dataclass
-import re
 from decimal import Decimal
 
 import dateparser
-import sys
-
 import requests
-from py_pdf_parser.loaders import load_file, PDFDocument
-
+from py_pdf_parser.loaders import PDFDocument, load_file
 from tools import cache_in_file, set_and_get
 
 
@@ -59,15 +56,17 @@ def process_transactions(transactions: list[ParseResult]):
         currency_amount = t.amount * rate
         round_currency_amount = round(currency_amount, 2)
         total_by_year[year] += round_currency_amount
-        results.append({
-            "Date": t.date,
-            "Amount $": t.amount,
-            "Rate": rate,
-            "Amount GEL": currency_amount,
-            "Amount GEL (rounded)": round_currency_amount,
-            "Total by year": total_by_year[year],
-            "New": None
-        })
+        results.append(
+            {
+                "Date": t.date,
+                "Amount $": t.amount,
+                "Rate": rate,
+                "Amount GEL": currency_amount,
+                "Amount GEL (rounded)": round_currency_amount,
+                "Total by year": total_by_year[year],
+                "New": None,
+            }
+        )
 
     if prev_results := set_and_get("results", results):
         for result in results:
@@ -75,7 +74,7 @@ def process_transactions(transactions: list[ParseResult]):
                 result["New"] = True
 
     with io.StringIO() as output:
-        writer = csv.DictWriter(output, fieldnames=results[0].keys(), delimiter='\t')
+        writer = csv.DictWriter(output, fieldnames=results[0].keys(), delimiter="\t")
         writer.writeheader()
         writer.writerows(results)
 
@@ -112,6 +111,7 @@ def get_deel_invoices():
     response = requests.get(url, headers=headers)
 
     print(response.text)
+
 
 if __name__ == "__main__":
     # Use first argument as file path

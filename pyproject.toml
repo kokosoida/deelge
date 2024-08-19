@@ -10,6 +10,17 @@ python = "^3.11"
 py-pdf-parser = "^0.12.0"
 requests = "^2.31.0"
 dateparser = "^1.2.0"
+black = "^24.8.0"
+isort = "^5.13.2"
+
+[tool.isort]
+profile = "hug"
+line_length = 120
+
+[tool.black]
+line-length = 120
+target-version = ['py311']
+include = '\.pyi?$'
 
 
 [build-system]
